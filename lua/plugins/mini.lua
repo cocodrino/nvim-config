@@ -8,7 +8,11 @@ return {
       require("mini.jump").setup()
 
       -- Animaciones suaves de scroll, cursor, etc.
-      require("mini.animate").setup()
+      -- Desactivar scroll/cursor para evitar sensación de lag
+      require("mini.animate").setup({
+        cursor = { enable = false },
+        scroll = { enable = false },
+      })
 
       -- Resaltar automáticamente la palabra bajo el cursor
       require("mini.cursorword").setup({ delay = 100 })
