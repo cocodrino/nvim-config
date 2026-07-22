@@ -5,6 +5,7 @@ return {
       dofile(vim.g.base46_cache .. "whichkey")
       opts.spec = opts.spec or {}
       vim.list_extend(opts.spec, {
+        { "<leader>b", group = "Buffer" },
         { "<leader>f", group = "Telescope" },
         { "<leader>g", group = "Git" },
         { "<leader>gD", group = "CodeDiff" },

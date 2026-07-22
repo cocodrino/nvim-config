@@ -1,5 +1,8 @@
 require("nvchad.configs.lspconfig").defaults()
 
+-- Re-enable LSP semantic tokens (NvChad los desactiva por defecto)
+vim.lsp.config("*", { on_init = function(_, _) end })
+
 local servers = { "html", "cssls" }
 vim.lsp.enable(servers)
 

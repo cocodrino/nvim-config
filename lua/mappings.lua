@@ -23,6 +23,14 @@ map("n", "<leader>gs", "<cmd>Telescope git_stash<CR>", { desc = "git stash" })
 
 map("n", "<leader>tr", "<cmd>NvimTreeToggle<CR>", { desc = "toggle nvim-tree" })
 
+-- Buffer bajo <leader>b
+pcall(vim.keymap.del, "n", "<leader>b")
+map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "buffer new" })
+map("n", "<leader>bd", function() require("nvchad.tabufline").close_buffer() end, { desc = "buffer close" })
+map("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "buffer list" })
+map("n", "<leader>b]", function() require("nvchad.tabufline").next() end, { desc = "buffer next" })
+map("n", "<leader>b[", function() require("nvchad.tabufline").prev() end, { desc = "buffer prev" })
+
 -- Evitar que <leader>h ejecute el atajo por defecto de NvChad (nueva terminal horizontal)
 pcall(vim.keymap.del, "n", "<leader>h")
 
