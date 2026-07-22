@@ -92,7 +92,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     map("gr", vim.lsp.buf.references, "references")
-    map("K", vim.lsp.buf.hover, "hover")
     map("<leader>ca", vim.lsp.buf.code_action, "code action")
     map("]d", vim.diagnostic.goto_next, "next diagnostic")
     map("[d", vim.diagnostic.goto_prev, "prev diagnostic")
@@ -101,13 +100,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("<leader>ld", vim.lsp.buf.definition, "definition")
     map("<leader>lD", vim.lsp.buf.declaration, "declaration")
     map("<leader>lr", vim.lsp.buf.references, "references")
-    map("<leader>li", vim.lsp.buf.hover, "hover")
     map("<leader>lt", vim.lsp.buf.type_definition, "type definition")
     map("<leader>lR", vim.lsp.buf.rename, "rename")
     map("<leader>la", vim.lsp.buf.code_action, "code action")
     map("<leader>ll", vim.diagnostic.setloclist, "diagnostic loclist")
     map("<leader>ln", vim.diagnostic.goto_next, "next diagnostic")
     map("<leader>lp", vim.diagnostic.goto_prev, "prev diagnostic")
+    map("<leader>ls", function()
+      require("lsp_signature").toggle_float_win()
+    end, "toggle signature help")
 
     -- Limpiar atajos redundantes dejados por el default de NvChad
     pcall(vim.keymap.del, "n", "<leader>D", { buffer = buf })

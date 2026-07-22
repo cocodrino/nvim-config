@@ -12,6 +12,7 @@ return {
         { "<leader>hp", group = "Harpoon" },
         { "<leader>l", group = "LSP" },
         { "<leader>t", group = "Tree" },
+        { "<leader>T", group = "TypeScript" },
         { "<leader>w", group = "Workspace / Worktree" },
       })
       return opts
