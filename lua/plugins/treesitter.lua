@@ -17,6 +17,9 @@ return {
       opts.auto_install = true
       opts.highlight = opts.highlight or {}
       opts.highlight.enable = true
+      opts.highlight.additional_vim_regex_highlighting = { "typescript", "typescriptreact", "javascript", "javascriptreact" }
+
+      opts.sync_install = false
     end,
   },
 }

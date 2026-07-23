@@ -11,3 +11,7 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
+
+-- Asegurar números de línea
+vim.opt.number = true
+vim.opt.relativenumber = false
