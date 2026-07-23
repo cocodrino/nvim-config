@@ -15,6 +15,7 @@ return {
         { "<leader>t", group = "Tree" },
         { "<leader>T", group = "TypeScript" },
         { "<leader>w", group = "Workspace / Worktree" },
+        { "<leader>wi", group = "Window" },
       })
       return opts
     end,

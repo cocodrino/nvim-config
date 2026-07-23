@@ -31,6 +31,17 @@ map("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "buffer list" })
 map("n", "<leader>b]", function() require("nvchad.tabufline").next() end, { desc = "buffer next" })
 map("n", "<leader>b[", function() require("nvchad.tabufline").prev() end, { desc = "buffer prev" })
 
+-- Ventanas bajo <leader>wi
+map("n", "<leader>wiv", "<cmd>vsplit<CR>", { desc = "window split vertical" })
+map("n", "<leader>wih", "<cmd>split<CR>", { desc = "window split horizontal" })
+map("n", "<leader>wic", "<cmd>close<CR>", { desc = "window close" })
+map("n", "<leader>wio", "<cmd>only<CR>", { desc = "window close others" })
+map("n", "<leader>wi=", "<C-w>=", { desc = "window equal size" })
+map("n", "<leader>wim", "<cmd>wincmd |<CR><cmd>wincmd _<CR>", { desc = "window maximize" })
+map("n", "<leader>wir", "<C-w>r", { desc = "window rotate" })
+map("n", "<leader>wix", "<C-w>x", { desc = "window exchange" })
+map("n", "<leader>wiT", "<C-w>T", { desc = "window move to tab" })
+
 -- Evitar que <leader>h ejecute el atajo por defecto de NvChad (nueva terminal horizontal)
 pcall(vim.keymap.del, "n", "<leader>h")
 
