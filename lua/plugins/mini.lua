@@ -2,7 +2,6 @@ return {
   {
     "echasnovski/mini.nvim",
     version = false,
-    event = "VeryLazy",
     config = function()
       -- Extender f/F/t/T para saltar entre líneas y repetir con ; ,
       require("mini.jump").setup()
@@ -39,17 +38,13 @@ return {
         },
       })
 
+      -- Abrir minimap automáticamente
+      require("mini.map").open()
+
       -- Toggle minimap
       vim.keymap.set("n", "<leader>mm", function()
         require("mini.map").toggle()
       end, { desc = "toggle minimap" })
-
-      -- Abrir minimap automáticamente al iniciar
-      vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function()
-          require("mini.map").open()
-        end,
-      })
     end,
   },
 }
