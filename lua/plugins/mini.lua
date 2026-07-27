@@ -43,6 +43,13 @@ return {
       vim.keymap.set("n", "<leader>mm", function()
         require("mini.map").toggle()
       end, { desc = "toggle minimap" })
+
+      -- Abrir minimap automáticamente al iniciar
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          require("mini.map").open()
+        end,
+      })
     end,
   },
 }
