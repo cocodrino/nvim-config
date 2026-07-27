@@ -19,6 +19,30 @@ return {
 
       -- Visualizar y operar sobre el scope de indentación
       require("mini.indentscope").setup()
+
+      -- Minimap overview del buffer
+      require("mini.map").setup({
+        integrations = {
+          require("mini.map").gen_integration.builtin_search(),
+          require("mini.map").gen_integration.diagnostic(),
+          require("mini.map").gen_integration.gitsigns(),
+        },
+        symbols = {
+          encode = require("mini.map").gen_encode_symbols.dot("4x2"),
+        },
+        window = {
+          focusable = false,
+          side = "right",
+          width = 10,
+          winblend = 25,
+          zindex = 10,
+        },
+      })
+
+      -- Toggle minimap
+      vim.keymap.set("n", "<leader>mm", function()
+        require("mini.map").toggle()
+      end, { desc = "toggle minimap" })
     end,
   },
 }
