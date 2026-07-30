@@ -100,6 +100,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("[d", vim.diagnostic.goto_prev, "prev diagnostic")
 
     -- Grupo LSP bajo <leader>l
+    -- NOTA: <leader>ls (toggle signature help) estaba asignado a lsp_signature.nvim,
+    --        pero se removió porque noice.nvim ya maneja signature help nativamente.
+    --        Si quieres volver a usar lsp_signature, reinstala el plugin y desactiva
+    --        noice lsp.signature en plugins/noice.lua.
     map("<leader>ld", vim.lsp.buf.definition, "definition")
     map("<leader>lD", vim.lsp.buf.declaration, "declaration")
     map("<leader>lr", vim.lsp.buf.references, "references")
@@ -109,9 +113,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("<leader>ll", vim.diagnostic.setloclist, "diagnostic loclist")
     map("<leader>ln", vim.diagnostic.goto_next, "next diagnostic")
     map("<leader>lp", vim.diagnostic.goto_prev, "prev diagnostic")
-    map("<leader>ls", function()
-      require("lsp_signature").toggle_float_win()
-    end, "toggle signature help")
 
     -- Limpiar atajos redundantes dejados por el default de NvChad
     pcall(vim.keymap.del, "n", "<leader>D", { buffer = buf })
