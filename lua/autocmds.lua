@@ -13,3 +13,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- Registra en zoxide cada directorio al que Neovim hace :cd
+vim.api.nvim_create_autocmd("DirChanged", {
+  callback = function()
+    if vim.fn.executable "zoxide" == 1 then
+      vim.system { "zoxide", "add", "--", vim.fn.getcwd() }
+    end
+  end,
+})
+

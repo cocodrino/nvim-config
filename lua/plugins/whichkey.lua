@@ -11,6 +11,14 @@ return {
         { "<leader>f", group = "Telescope" },
         { "<leader>g", group = "Git" },
         { "<leader>gD", group = "CodeDiff" },
+        { "<leader>gd", group = "DiffBandit" },
+        { "<leader>gdd", group = "DiffBandit: teclas de la vista" },
+        { "<leader>gdd]", group = "siguiente" },
+        { "<leader>gdd[", group = "anterior" },
+        { "<leader>ga", group = "Atlas" },
+        { "<leader>gaa", group = "Atlas: teclas de la review" },
+        { "<leader>gaa]", group = "siguiente" },
+        { "<leader>gaa[", group = "anterior" },
         { "<leader>hc", group = "Console" },
         { "<leader>hp", group = "Harpoon" },
         { "<leader>l", group = "LSP / Trouble" },
@@ -19,6 +27,7 @@ return {
         { "<leader>T", group = "TypeScript" },
         { "<leader>w", group = "Workspace / Worktree" },
         { "<leader>wi", group = "Window" },
+        { "<leader>y", group = "Yazi" },
 
         -- Explicit labels for single-letter prefixes to avoid "+N keymaps"
         { "<leader>ca", desc = "LSP code action" },

@@ -7,6 +7,55 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+-- Command+clic → definición. K (docs) y gd (definición) no se reasignan.
+map("n", "<D-LeftMouse>", "<LeftMouse><Cmd>lua vim.lsp.buf.definition()<CR>", { desc = "LSP definition (cmd-click)" })
+
+-- Command encima del símbolo → docs, sin mover el cursor. Si la terminal no
+-- reenvía <D-MouseMove>, K sigue siendo el atajo.
+local hover_pending
+map("n", "<D-MouseMove>", function()
+  if hover_pending then
+    hover_pending:stop()
+  end
+  hover_pending = vim.defer_fn(function()
+    local mouse = vim.fn.getmousepos()
+    if mouse.winid == 0 or mouse.line < 1 or mouse.column < 1 then
+      return
+    end
+    local buf = vim.api.nvim_win_get_buf(mouse.winid)
+    if #vim.lsp.get_clients { bufnr = buf } == 0 then
+      return
+    end
+    local line = vim.api.nvim_buf_get_lines(buf, mouse.line - 1, mouse.line, false)[1] or ""
+    local col = mouse.column - 1
+    if col >= #line then
+      return
+    end
+    local client = vim.lsp.get_clients({ bufnr = buf })[1]
+    local params = {
+      textDocument = vim.lsp.util.make_text_document_params(buf),
+      position = {
+        line = mouse.line - 1,
+        character = vim.str_utfindex(line, client.offset_encoding, col),
+      },
+    }
+    vim.lsp.buf_request(buf, "textDocument/hover", params, function(err, result)
+      if err or not result or not result.contents then
+        return
+      end
+      local md = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+      if vim.tbl_isempty(md) then
+        return
+      end
+      vim.lsp.util.open_floating_preview(md, "markdown", {
+        focus = false,
+        focusable = true,
+        focus_id = "cmd-mouse-hover",
+      })
+    end)
+  end, 200)
+end, { desc = "LSP hover (cmd + mouse)" })
+
 map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "telescope keymaps" })
 map("n", "<leader>fC", "<cmd>Telescope commands<CR>", { desc = "telescope commands" })
 map("n", "<leader>fr", "<cmd>Telescope registers<CR>", { desc = "telescope registers" })
@@ -30,6 +79,7 @@ map("n", "<leader>bd", function() require("nvchad.tabufline").close_buffer() end
 map("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "buffer list" })
 map("n", "<leader>b]", function() require("nvchad.tabufline").next() end, { desc = "buffer next" })
 map("n", "<leader>b[", function() require("nvchad.tabufline").prev() end, { desc = "buffer prev" })
+map("n", "gb", function() require("nvchad.tabufline").prev() end, { desc = "buffer prev" })
 
 -- Ventanas bajo <leader>wi
 map("n", "<leader>wiv", "<cmd>vsplit<CR>", { desc = "window split vertical" })

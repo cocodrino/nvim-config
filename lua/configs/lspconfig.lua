@@ -24,6 +24,11 @@ local pyright_config = {
         autoImportCompletions = true,
         diagnosticMode = "openFilesOnly",
         useLibraryCodeForTypes = true,
+        inlayHints = {
+          variableTypes = true,
+          functionReturnTypes = false,
+          callArgumentNames = false,
+        },
       },
     },
   },
@@ -53,24 +58,24 @@ local ts_ls_config = {
   settings = {
     typescript = {
       inlayHints = {
-        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHints = "literals",
         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
         includeInlayFunctionParameterTypeHints = true,
         includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
+        includeInlayPropertyDeclarationTypeHints = false,
+        includeInlayFunctionLikeReturnTypeHints = false,
+        includeInlayEnumMemberValueHints = false,
       },
     },
     javascript = {
       inlayHints = {
-        includeInlayParameterNameHints = "all",
+        includeInlayParameterNameHints = "literals",
         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
         includeInlayFunctionParameterTypeHints = true,
         includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
+        includeInlayPropertyDeclarationTypeHints = false,
+        includeInlayFunctionLikeReturnTypeHints = false,
+        includeInlayEnumMemberValueHints = false,
       },
     },
   },
@@ -112,9 +117,24 @@ for _, buf in ipairs(vim.api.nvim_list_bufs()) do
   end
 end
 
+-- Preferencia global: <leader>lh la invierte y los buffers nuevos la respetan.
+local inlay_hints_enabled = true
+
+local function set_inlay_hints(enabled)
+  inlay_hints_enabled = enabled
+  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(b) then
+      vim.lsp.inlay_hint.enable(enabled, { bufnr = b })
+    end
+  end
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local buf = args.buf
+    -- Dibuja los inlay hints que el servidor ya ofrece (ts_ls, pyright, kotlin).
+    vim.lsp.inlay_hint.enable(inlay_hints_enabled, { bufnr = buf })
+
     local map = function(keys, func, desc)
       vim.keymap.set("n", keys, func, { buffer = buf, desc = "LSP " .. desc })
     end
@@ -137,6 +157,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("<leader>ls", function()
       require("lsp_signature").toggle_float_win()
     end, "toggle signature help")
+    map("<leader>lh", function()
+      local enabled = not vim.lsp.inlay_hint.is_enabled({ bufnr = buf })
+      set_inlay_hints(enabled)
+      vim.notify(enabled and "inlay hints: on" or "inlay hints: off")
+    end, "toggle inlay hints")
 
     -- Limpiar atajos redundantes dejados por el default de NvChad
     pcall(vim.keymap.del, "n", "<leader>D", { buffer = buf })
